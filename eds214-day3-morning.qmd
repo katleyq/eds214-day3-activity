@@ -9,6 +9,8 @@ library(dataRetrieval)
 library(tidyverse)
 ```
 
+# Exercise 1
+
 ```{r}
 # Ventura River
 siteNumber <- "11118500"
@@ -23,4 +25,55 @@ discharge <- readNWISdv(siteNumber, parameterCd, startDate, endDate)
 discharge_plot<- ggplot(data = discharge, aes(x = Date, y = X_00060_00003)) +
   geom_line()
 discharge_plot
+```
+
+# Exercise 2
+
+```{r}
+library(metajam)
+```
+
+```{r}
+# example code from lecture slides
+# # set inputs
+# data_obj <- "https://arcticdata.io/metacat/d1/mn/v2/object/urn%3Auuid%3A9e123f84-ce0d-4094-b898-c9e73680eafa"
+# path <- "~/Desktop"
+# # download data and metadata
+# library(metajam)
+# download_d1_data(data_obj, path)
+# # Returned
+# #[1] "~/Desktop/doi_10.18739_A2DP3X__Alaska_Schools_Rentention2009_15"
+```
+
+```{r}
+# set inputs
+data_obj <- "https://knb.ecoinformatics.org/knb/d1/mn/v2/object/urn%3Auuid%3A7fc6f6db-c5ea-426a-a743-1f2edafb43b8"
+path <- "~/github/eds214-day3-activity/data/"
+# download data and metadata
+download_d1_data(data_obj, path)
+# Returned
+#[1] "~/github/eds214-day3-activity/data//doi_10.5063_F1N58JPP__household_language__csv"
+```
+
+```{r}
+alaskan_language_data <- read_csv("~/github/eds214-day3-activity/data/doi_10.5063_F1N58JPP__household_language__csv/household_language.csv")
+```
+
+```{r}
+alaskan_language_perecentages <- alaskan_language_data %>% 
+  filter(Year %in% c(2009, 2010, 2011, 2012, 2013, 2014, 2015)) %>% 
+  group_by(Year,city) %>% 
+  summarize(city = city,
+    EnglishOnly_Percentage = (speak_only_english / total))
+  
+alaskan_language_perecentages_class_answer <- alaskan_language_data %>% 
+  filter(Year %in% c(2009, 2010, 2011, 2012, 2013, 2014, 2015)) %>% 
+  group_by(Year) %>% 
+  summarize(EnglishOnly_Percentage = (sum(speak_only_english) / sum(total)))
+    
+```
+
+```{r}
+# using metajam:
+metajam::read_d1_files("data/doi_10.5063_F1N58JPP__household_language__csv/")
 ```
