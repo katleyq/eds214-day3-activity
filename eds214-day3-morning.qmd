@@ -1,0 +1,26 @@
+---
+title: "eds214-day3-morning"
+format: html
+editor: visual
+---
+
+```{r}
+library(dataRetrieval)
+library(tidyverse)
+```
+
+```{r}
+# Ventura River
+siteNumber <- "11118500"
+parameterCd <- "00060" # Discharge
+startDate <- "2023-08-19"
+endDate <- "2023-08-22"
+
+discharge <- readNWISdv(siteNumber, parameterCd, startDate, endDate)
+```
+
+```{r}
+discharge_plot<- ggplot(data = discharge, aes(x = Date, y = X_00060_00003)) +
+  geom_line()
+discharge_plot
+```
